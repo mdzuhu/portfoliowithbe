@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manekar Mohammed Zuhaib | Portfolio</title>
+  <title>Zuhaib's Portfolio</title>
   
+  <!-- Critical Anti-Flicker Script for Theme Persistence -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+
   <!-- SEO Meta Tags -->
   <meta name="title" content="Manekar Mohammed Zuhaib | Portfolio & Student Leader" />
   <meta name="description" content="Official portfolio of Manekar Mohammed Zuhaib — Student Leader, Innovator, and aspiring technologist recognized by the former President of ISRO." />
@@ -12,17 +25,17 @@
   <meta name="author" content="Manekar Mohammed Zuhaib" />
   <meta name="robots" content="index, follow" />
 
-  <!-- Open Graph / Social Media Preview -->
+  <!-- Open Graph Meta Tags -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Manekar Mohammed Zuhaib | Portfolio" />
   <meta property="og:description" content="Official portfolio of Manekar Mohammed Zuhaib — Student Leader and Innovator based in Chennai." />
 
-  <!-- Linked Glassmorphic Stylesheet -->
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Navigation -->
+  <!-- Navigation Bar -->
   <nav>
     <div class="nav-container">
       <a href="#" class="nav-logo">
@@ -32,8 +45,8 @@
         <span>Zuhaib's Portfolio</span>
       </a>
 
-      <div class="nav-actions">
-        <!-- Desktop Links -->
+      <div class="nav-right">
+        <!-- Desktop Nav Links -->
         <ul class="nav-links">
           <li><a href="#about">About</a></li>
           <li><a href="#experience">Experience</a></li>
@@ -42,13 +55,13 @@
           <li><a href="#skills">Skills</a></li>
         </ul>
 
-        <!-- Option 4: Light / Dark Mode Toggle Button -->
-        <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme" aria-label="Toggle Dark/Light Mode">
+        <!-- Dark / Light Theme Toggle -->
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme">
           <span id="themeIcon">🌙</span>
         </button>
 
-        <!-- Option 6: Hamburger Menu Button for Mobile -->
-        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open Navigation Menu">
+        <!-- Mobile Hamburger Button -->
+        <button id="hamburgerBtn" class="hamburger-btn" aria-label="Open menu" aria-expanded="false">
           <span class="hamburger-line"></span>
           <span class="hamburger-line"></span>
           <span class="hamburger-line"></span>
@@ -57,15 +70,17 @@
     </div>
   </nav>
 
-  <!-- Option 6: Mobile Drawer & Overlay -->
-  <div class="mobile-nav-overlay" id="mobileOverlay"></div>
-  <div class="mobile-nav-drawer" id="mobileDrawer">
-    <a href="#about" class="drawer-link">About</a>
-    <a href="#experience" class="drawer-link">Experience</a>
-    <a href="#achievements" class="drawer-link">Achievements</a>
-    <a href="#education" class="drawer-link">Education</a>
-    <a href="#skills" class="drawer-link">Skills</a>
-  </div>
+  <!-- Mobile Drawer Overlay -->
+  <div id="mobileNavOverlay" class="mobile-nav-overlay"></div>
+
+  <!-- Mobile Slide-Out Glass Drawer -->
+  <aside id="mobileNavDrawer" class="mobile-nav-drawer" aria-label="Mobile Navigation">
+    <a href="#about" class="mobile-nav-link">About</a>
+    <a href="#experience" class="mobile-nav-link">Experience</a>
+    <a href="#achievements" class="mobile-nav-link">Achievements</a>
+    <a href="#education" class="mobile-nav-link">Education</a>
+    <a href="#skills" class="mobile-nav-link">Skills</a>
+  </aside>
 
   <div class="container">
     <!-- Hero Section -->
@@ -428,98 +443,91 @@
     </footer>
   </div>
 
-  <!-- JavaScript: Animations, Dark Mode & Mobile Menu -->
+  <!-- Optimized JavaScript Execution -->
   <script>
-    // --- 1. Dark / Light Mode (Option 4) ---
-    const themeToggleBtn = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Theme Toggle Logic
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const htmlEl = document.documentElement;
 
-    if (currentTheme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      themeIcon.textContent = '☀️';
-    }
-
-    themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        themeIcon.textContent = '🌙';
-        localStorage.setItem('theme', 'light');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        themeIcon.textContent = '☀️';
-        localStorage.setItem('theme', 'dark');
+      function updateThemeIcon(theme) {
+        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
       }
-    });
 
-    // --- 2. Mobile Drawer Navigation (Option 6) ---
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const mobileDrawer = document.getElementById('mobileDrawer');
-    const mobileOverlay = document.getElementById('mobileOverlay');
-    const drawerLinks = document.querySelectorAll('.drawer-link');
+      updateThemeIcon(htmlEl.getAttribute('data-theme'));
 
-    function toggleMenu() {
-      const isOpen = mobileDrawer.classList.contains('open');
-      if (isOpen) {
-        mobileDrawer.classList.remove('open');
-        mobileOverlay.classList.remove('open');
-        hamburgerBtn.classList.remove('is-active');
-      } else {
-        mobileDrawer.classList.add('open');
-        mobileOverlay.classList.add('open');
-        hamburgerBtn.classList.add('is-active');
-      }
-    }
-
-    hamburgerBtn.addEventListener('click', toggleMenu);
-    mobileOverlay.addEventListener('click', toggleMenu);
-
-    drawerLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileDrawer.classList.remove('open');
-        mobileOverlay.classList.remove('open');
-        hamburgerBtn.classList.remove('is-active');
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = htmlEl.getAttribute('data-theme');
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        htmlEl.setAttribute('data-theme', nextTheme);
+        localStorage.setItem('theme', nextTheme);
+        updateThemeIcon(nextTheme);
       });
-    });
 
-    // --- 3. Scroll Reveal Animation ---
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.12
-    };
+      // 2. Mobile Hamburger Menu & Slide Drawer Logic
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+      const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
+      function toggleMobileMenu(isOpen) {
+        hamburgerBtn.classList.toggle('is-active', isOpen);
+        mobileNavDrawer.classList.toggle('is-active', isOpen);
+        mobileNavOverlay.classList.toggle('is-active', isOpen);
+        hamburgerBtn.setAttribute('aria-expanded', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      }
+
+      hamburgerBtn.addEventListener('click', () => {
+        const isOpening = !mobileNavDrawer.classList.contains('is-active');
+        toggleMobileMenu(isOpening);
+      });
+
+      mobileNavOverlay.addEventListener('click', () => toggleMobileMenu(false));
+
+      mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => toggleMobileMenu(false));
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileNavDrawer.classList.contains('is-active')) {
+          toggleMobileMenu(false);
         }
       });
-    }, observerOptions);
 
-    document.querySelectorAll('.fade-in').forEach(element => {
-      revealObserver.observe(element);
-    });
+      // 3. Scroll Reveal via Intersection Observer
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
 
-    // --- 4. Interactive Skill Proficiency Click ---
-    document.querySelectorAll('.interactive-skill').forEach(card => {
-      card.addEventListener('click', () => {
-        const isActive = card.classList.contains('active');
-        const fillBar = card.querySelector('.rating-bar-fill');
-        const score = card.getAttribute('data-score');
-        const percentage = (score / 10) * 100;
+      document.querySelectorAll('.fade-in').forEach(el => revealObserver.observe(el));
 
-        if (isActive) {
-          card.classList.remove('active');
-          fillBar.style.width = '0%';
-        } else {
-          card.classList.add('active');
-          setTimeout(() => {
-            fillBar.style.width = percentage + '%';
-          }, 80);
-        }
+      // 4. Interactive Skill Tag & Progress Bar Animation
+      document.querySelectorAll('.interactive-skill').forEach(card => {
+        card.addEventListener('click', () => {
+          const isActive = card.classList.contains('active');
+          const fillBar = card.querySelector('.rating-bar-fill');
+          const score = card.getAttribute('data-score');
+          const percentage = (score / 10) * 100;
+
+          if (isActive) {
+            card.classList.remove('active');
+            fillBar.style.width = '0%';
+          } else {
+            card.classList.add('active');
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                fillBar.style.width = percentage + '%';
+              }, 60);
+            });
+          }
+        });
       });
     });
   </script>
