@@ -1,37 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Depth-Enhanced Beige & Olive Palette */
+  /* Warm Beige & Olive Glass Palette */
   --bg: #f4efe6;
-  --bg-subtle: #eae3d5;
-  --card-bg: rgba(254, 253, 250, 0.82);
-  --card-solid: #fcfbf8;
-  
   --primary: #4a5d23;
   --primary-hover: #374619;
-  --primary-light: #e6edd9;
-  --primary-glow: rgba(74, 93, 35, 0.25);
+  --primary-light: rgba(74, 93, 35, 0.12);
+  --primary-glow: rgba(74, 93, 35, 0.28);
   
-  --text: #20241b;
-  --text-muted: #676d5e;
+  --text: #1d2218;
+  --text-muted: #5f6555;
   
-  /* Precision Dimensional Borders */
-  --border: rgba(74, 93, 35, 0.12);
-  --border-highlight: rgba(255, 255, 255, 0.9);
-  --border-hover: rgba(74, 93, 35, 0.28);
+  /* Pure Glassmorphic Surface System */
+  --glass-surface: rgba(255, 253, 248, 0.62);
+  --glass-surface-hover: rgba(255, 253, 248, 0.82);
+  --glass-button: rgba(255, 255, 255, 0.55);
+  --glass-button-hover: rgba(255, 255, 255, 0.85);
   
-  /* Multi-Layered Natural Shadows (Depth System) */
-  --shadow-ambient: 0 1px 2px rgba(32, 36, 27, 0.04);
-  --shadow-elevation: 
-    0 4px 6px -1px rgba(32, 36, 27, 0.04),
-    0 10px 20px -3px rgba(32, 36, 27, 0.06),
-    inset 0 1px 1px var(--border-highlight);
-  --shadow-hover: 
-    0 12px 24px -4px rgba(74, 93, 35, 0.12),
-    0 24px 38px -6px rgba(32, 36, 27, 0.08),
-    inset 0 1px 2px var(--border-highlight);
-    
-  --radius: 18px;
+  /* Glass Borders & Specular Edge Lighting */
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-border-subtle: rgba(74, 93, 35, 0.14);
+  --glass-border-hover: rgba(74, 93, 35, 0.35);
+
+  /* Glass Depth Shadows */
+  --glass-shadow: 
+    0 8px 32px 0 rgba(40, 44, 36, 0.07),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 1px 0 rgba(74, 93, 35, 0.05);
+
+  --glass-shadow-hover: 
+    0 16px 40px 0 rgba(74, 93, 35, 0.14),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.95);
+
+  --radius: 20px;
   --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -46,13 +47,14 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Layered Ambient Background with Light Orbs */
+/* Layered Ambient Mesh for Glass Refraction */
 body {
   background-color: var(--bg);
   background-image: 
-    radial-gradient(circle at 10% 15%, rgba(162, 185, 122, 0.25) 0%, transparent 45%),
-    radial-gradient(circle at 90% 45%, rgba(214, 199, 170, 0.35) 0%, transparent 50%),
-    radial-gradient(circle at 30% 90%, rgba(135, 155, 94, 0.2) 0%, transparent 45%);
+    radial-gradient(circle at 12% 18%, rgba(155, 180, 110, 0.35) 0%, transparent 45%),
+    radial-gradient(circle at 88% 30%, rgba(220, 195, 155, 0.45) 0%, transparent 50%),
+    radial-gradient(circle at 50% 75%, rgba(130, 155, 88, 0.28) 0%, transparent 55%),
+    radial-gradient(circle at 20% 95%, rgba(205, 185, 145, 0.35) 0%, transparent 50%);
   background-attachment: fixed;
   color: var(--text);
   line-height: 1.65;
@@ -60,15 +62,15 @@ body {
   position: relative;
 }
 
-/* Glassmorphic Navbar with Depth Edge */
+/* Glassmorphic Navbar */
 nav {
   position: sticky;
   top: 0;
-  background: rgba(244, 239, 230, 0.78);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 4px 20px rgba(32, 36, 27, 0.03);
+  background: rgba(244, 239, 230, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 4px 24px rgba(32, 36, 27, 0.04);
   z-index: 100;
   transition: var(--transition-smooth);
 }
@@ -88,7 +90,53 @@ nav {
   color: var(--primary);
   text-decoration: none;
   letter-spacing: -0.02em;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  transition: transform 0.25s ease;
+}
+
+.nav-logo:hover {
+  transform: translateY(-1px);
+}
+
+/* Rotated Glass Diamond Badge */
+.logo-diamond {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, rgba(92, 116, 46, 0.9), rgba(62, 79, 27, 0.95));
+  border-radius: 8px;
+  transform: rotate(45deg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 6px 14px rgba(74, 93, 35, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  flex-shrink: 0;
+}
+
+.diamond-text {
+  transform: rotate(-45deg);
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  user-select: none;
+}
+
+.nav-logo:hover .logo-diamond {
+  transform: rotate(225deg);
+  box-shadow: 0 8px 20px rgba(74, 93, 35, 0.35);
+}
+
+.nav-logo:hover .diamond-text {
+  transform: rotate(-225deg);
 }
 
 .nav-links {
@@ -127,14 +175,14 @@ nav {
   width: 100%;
 }
 
-/* Main Container */
+/* Container */
 .container {
   max-width: 1080px;
   margin: 0 auto;
   padding: 2.5rem 1.75rem;
 }
 
-/* Hero Section with Layered Typography */
+/* Hero Section */
 .hero {
   padding: 5.5rem 0 4rem;
   text-align: center;
@@ -147,17 +195,19 @@ nav {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--primary-light);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: var(--primary);
   font-weight: 700;
   font-size: 0.85rem;
-  padding: 0.45rem 1.15rem;
+  padding: 0.45rem 1.25rem;
   border-radius: 9999px;
   margin-bottom: 1.75rem;
-  border: 1px solid rgba(74, 93, 35, 0.16);
+  border: 1px solid var(--glass-border);
   box-shadow: 
-    0 2px 6px rgba(74, 93, 35, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    0 4px 14px rgba(40, 44, 36, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95);
 }
 
 .hero h1 {
@@ -186,6 +236,7 @@ nav {
   line-height: 1.75;
 }
 
+/* Glassmorphic Contact Buttons */
 .contact-info {
   display: flex;
   justify-content: center;
@@ -197,28 +248,34 @@ nav {
 .contact-info span {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   color: var(--text);
   text-decoration: none;
-  background: var(--card-bg);
-  padding: 0.65rem 1.3rem;
+  background: var(--glass-button);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 0.7rem 1.35rem;
   border-radius: 9999px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-border);
   font-size: 0.92rem;
   font-weight: 600;
-  box-shadow: var(--shadow-elevation);
-  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 6px 18px rgba(32, 36, 27, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95);
   transition: var(--transition-smooth);
 }
 
 .contact-info a:hover {
-  border-color: var(--primary);
+  background: var(--glass-button-hover);
+  border-color: var(--glass-border-hover);
   color: var(--primary);
   transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: 
+    0 12px 28px rgba(74, 93, 35, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 1);
 }
 
-/* Sections */
+/* Section Headings */
 section {
   padding: 3.5rem 0;
 }
@@ -244,10 +301,10 @@ section {
   height: 4px;
   background: var(--primary);
   border-radius: 4px;
-  box-shadow: 0 2px 4px var(--primary-glow);
+  box-shadow: 0 2px 6px var(--primary-glow);
 }
 
-/* Deep Dimensional Cards */
+/* Glassmorphic Grid & Cards */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
@@ -255,21 +312,23 @@ section {
 }
 
 .card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 2.25rem;
-  box-shadow: var(--shadow-elevation);
-  backdrop-filter: blur(12px);
+  box-shadow: var(--glass-shadow);
   transition: var(--transition-smooth);
   position: relative;
   overflow: hidden;
 }
 
 .card:hover {
-  border-color: var(--border-hover);
+  background: var(--glass-surface-hover);
+  border-color: var(--glass-border-hover);
   transform: translateY(-5px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: var(--glass-shadow-hover);
 }
 
 .card-header {
@@ -287,16 +346,19 @@ section {
   letter-spacing: -0.01em;
 }
 
+/* Glass Badge */
 .badge {
-  background: var(--primary-light);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--primary);
   padding: 0.35rem 0.8rem;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 0.8rem;
   font-weight: 700;
   white-space: nowrap;
-  border: 1px solid rgba(74, 93, 35, 0.15);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.95);
 }
 
 .card .meta {
@@ -315,7 +377,7 @@ section {
   margin-bottom: 0.5rem;
 }
 
-/* Experience 2-Column Floating Card */
+/* Experience Glass Cards */
 .experience-list {
   display: flex;
   flex-direction: column;
@@ -323,19 +385,21 @@ section {
 }
 
 .experience-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 2.25rem;
-  box-shadow: var(--shadow-elevation);
-  backdrop-filter: blur(12px);
+  box-shadow: var(--glass-shadow);
   transition: var(--transition-smooth);
 }
 
 .experience-card:hover {
-  border-color: var(--border-hover);
+  background: var(--glass-surface-hover);
+  border-color: var(--glass-border-hover);
   transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: var(--glass-shadow-hover);
 }
 
 .experience-grid {
@@ -346,7 +410,7 @@ section {
 }
 
 .experience-col-meta {
-  border-right: 1px solid var(--border);
+  border-right: 1px solid rgba(74, 93, 35, 0.12);
   padding-right: 2rem;
 }
 
@@ -373,7 +437,7 @@ section {
   line-height: 1.7;
 }
 
-/* Tags & Deep Interactive Skills */
+/* Glassmorphic Tags & Interactive Skill Chips */
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -381,18 +445,20 @@ section {
 }
 
 .tag {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
+  background: var(--glass-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
   padding: 0.65rem 1.15rem;
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 0.92rem;
   font-weight: 600;
   color: var(--text);
-  box-shadow: var(--shadow-elevation);
+  box-shadow: var(--glass-shadow);
   transition: var(--transition-smooth);
 }
 
-/* Tactile Interactive Skill Chips */
+/* Interactive Glass Skill Buttons */
 .interactive-skill {
   cursor: pointer;
   user-select: none;
@@ -400,9 +466,10 @@ section {
 }
 
 .interactive-skill:hover {
-  border-color: var(--primary);
+  background: var(--glass-surface-hover);
+  border-color: var(--glass-border-hover);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: var(--glass-shadow-hover);
 }
 
 .interactive-skill:active {
@@ -424,11 +491,11 @@ section {
 }
 
 .interactive-skill.active {
+  background: rgba(255, 255, 255, 0.88);
   border-color: var(--primary);
-  background: #ffffff;
   box-shadow: 
-    0 10px 20px -3px rgba(74, 93, 35, 0.16),
-    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    0 12px 28px rgba(74, 93, 35, 0.16),
+    inset 0 1px 2px rgba(255, 255, 255, 1);
 }
 
 .interactive-skill.active .hint-icon {
@@ -458,14 +525,14 @@ section {
   color: var(--primary);
 }
 
-/* Sunken/Inset Depth Track for Rating */
+/* Glassmorphic Inset Rating Track */
 .rating-bar-bg {
   width: 100%;
   height: 8px;
   background: rgba(40, 44, 36, 0.08);
   border-radius: 9999px;
   overflow: hidden;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15); /* Carved depth look */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .rating-bar-fill {
@@ -473,7 +540,7 @@ section {
   width: 0%;
   background: linear-gradient(90deg, #74903c, #4a5d23);
   border-radius: 9999px;
-  box-shadow: 0 1px 4px rgba(74, 93, 35, 0.35);
+  box-shadow: 0 1px 6px rgba(74, 93, 35, 0.4);
   transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -494,7 +561,7 @@ section {
 footer {
   text-align: center;
   padding: 4.5rem 0 3.5rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--glass-border);
   color: var(--text-muted);
   font-size: 0.9rem;
 }
@@ -507,7 +574,7 @@ footer {
   }
   .experience-col-meta {
     border-right: none;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(74, 93, 35, 0.12);
     padding-right: 0;
     padding-bottom: 1.25rem;
   }
