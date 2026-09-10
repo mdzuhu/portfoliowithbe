@@ -17,7 +17,7 @@
   <meta property="og:title" content="Manekar Mohammed Zuhaib | Portfolio" />
   <meta property="og:description" content="Official portfolio of Manekar Mohammed Zuhaib — Student Leader and Innovator based in Chennai." />
 
-  <!-- Linked Modern External Stylesheet -->
+  <!-- Linked Glassmorphic Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -31,15 +31,41 @@
         </span>
         <span>Zuhaib's Portfolio</span>
       </a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#achievements">Achievements</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#skills">Skills</a></li>
-      </ul>
+
+      <div class="nav-actions">
+        <!-- Desktop Links -->
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#achievements">Achievements</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#skills">Skills</a></li>
+        </ul>
+
+        <!-- Option 4: Light / Dark Mode Toggle Button -->
+        <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme" aria-label="Toggle Dark/Light Mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+
+        <!-- Option 6: Hamburger Menu Button for Mobile -->
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open Navigation Menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
     </div>
   </nav>
+
+  <!-- Option 6: Mobile Drawer & Overlay -->
+  <div class="mobile-nav-overlay" id="mobileOverlay"></div>
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <a href="#about" class="drawer-link">About</a>
+    <a href="#experience" class="drawer-link">Experience</a>
+    <a href="#achievements" class="drawer-link">Achievements</a>
+    <a href="#education" class="drawer-link">Education</a>
+    <a href="#skills" class="drawer-link">Skills</a>
+  </div>
 
   <div class="container">
     <!-- Hero Section -->
@@ -402,9 +428,62 @@
     </footer>
   </div>
 
-  <!-- JavaScript for Smooth Interactions and Animations -->
+  <!-- JavaScript: Animations, Dark Mode & Mobile Menu -->
   <script>
-    // Smooth scroll reveal using Intersection Observer
+    // --- 1. Dark / Light Mode (Option 4) ---
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+
+    if (currentTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeIcon.textContent = '☀️';
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        themeIcon.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+
+    // --- 2. Mobile Drawer Navigation (Option 6) ---
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    const drawerLinks = document.querySelectorAll('.drawer-link');
+
+    function toggleMenu() {
+      const isOpen = mobileDrawer.classList.contains('open');
+      if (isOpen) {
+        mobileDrawer.classList.remove('open');
+        mobileOverlay.classList.remove('open');
+        hamburgerBtn.classList.remove('is-active');
+      } else {
+        mobileDrawer.classList.add('open');
+        mobileOverlay.classList.add('open');
+        hamburgerBtn.classList.add('is-active');
+      }
+    }
+
+    hamburgerBtn.addEventListener('click', toggleMenu);
+    mobileOverlay.addEventListener('click', toggleMenu);
+
+    drawerLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileDrawer.classList.remove('open');
+        mobileOverlay.classList.remove('open');
+        hamburgerBtn.classList.remove('is-active');
+      });
+    });
+
+    // --- 3. Scroll Reveal Animation ---
     const observerOptions = {
       root: null,
       rootMargin: '0px',
@@ -424,7 +503,7 @@
       revealObserver.observe(element);
     });
 
-    // Interactive Skill Tag Click & Rating Animation
+    // --- 4. Interactive Skill Proficiency Click ---
     document.querySelectorAll('.interactive-skill').forEach(card => {
       card.addEventListener('click', () => {
         const isActive = card.classList.contains('active');
