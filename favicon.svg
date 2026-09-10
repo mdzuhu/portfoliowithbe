@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Rich olive green gradient matching the theme -->
+    <linearGradient id="oliveGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5c742e"/>
+      <stop offset="100%" stop-color="#3e4f1b"/>
+    </linearGradient>
+    
+    <!-- Subtle specular inner highlight/depth filter -->
+    <filter id="subtleShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#283213" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Rotated Diamond with smooth rounded corners -->
+  <rect 
+    x="14" 
+    y="14" 
+    width="36" 
+    height="36" 
+    rx="8" 
+    fill="url(#oliveGradient)" 
+    stroke="rgba(255, 255, 255, 0.45)" 
+    stroke-width="1.5"
+    transform="rotate(45 32 32)"
+    filter="url(#subtleShadow)"
+  />
+
+  <!-- Crisp Upright ZP Monogram -->
+  <text 
+    x="32" 
+    y="37.5" 
+    text-anchor="middle" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" 
+    font-size="16" 
+    font-weight="800" 
+    letter-spacing="0.5" 
+    fill="#ffffff"
+  >ZP</text>
+</svg>
