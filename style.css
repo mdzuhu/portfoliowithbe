@@ -282,7 +282,7 @@ nav {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
 }
 
-/* Hamburger Active / Cross Transform */
+/* Hamburger Cross Transform */
 .hamburger-btn.is-active .hamburger-line:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
@@ -355,7 +355,7 @@ nav {
   padding-left: 6px;
 }
 
-/* Main Container */
+/* Container */
 .container {
   max-width: 1080px;
   margin: 0 auto;
@@ -414,7 +414,7 @@ nav {
   line-height: 1.75;
 }
 
-/* Glassmorphic Contact Buttons */
+/* Contact Info Buttons */
 .contact-info {
   display: flex;
   justify-content: center;
@@ -478,7 +478,7 @@ section {
   box-shadow: 0 2px 6px var(--primary-glow);
 }
 
-/* Glassmorphic Grid & Cards */
+/* Grid & Cards */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
@@ -550,7 +550,7 @@ section {
   margin-bottom: 0.5rem;
 }
 
-/* Experience Glass Cards */
+/* Experience Cards */
 .experience-list {
   display: flex;
   flex-direction: column;
@@ -610,7 +610,7 @@ section {
   line-height: 1.7;
 }
 
-/* Tags & Interactive Skill Chips */
+/* Skills & Tags */
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -697,7 +697,6 @@ section {
   color: var(--primary);
 }
 
-/* Inset Rating Track */
 .rating-bar-bg {
   width: 100%;
   height: 8px;
@@ -715,6 +714,77 @@ section {
   box-shadow: 0 1px 6px var(--primary-glow);
   transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* Contact Form Styling */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1.35rem;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  border-radius: 12px;
+  background: var(--glass-button);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: var(--transition-smooth);
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+  background: var(--glass-surface-hover);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.form-submit-btn {
+  width: 100%;
+  padding: 0.95rem;
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 6px 16px var(--primary-glow);
+}
+
+.form-submit-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px var(--primary-glow);
+}
+
+.form-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-status {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+.form-status.success { color: var(--primary); }
+.form-status.error { color: #d9534f; }
 
 /* Scroll Fade Animations */
 .fade-in {

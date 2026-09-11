@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-  <!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zuhaib's Portfolio</title>
@@ -19,6 +17,9 @@
       }
     })();
   </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
   <!-- SEO Meta Tags -->
   <meta name="title" content="Manekar Mohammed Zuhaib | Portfolio & Student Leader" />
@@ -55,6 +56,7 @@
           <li><a href="#achievements">Achievements</a></li>
           <li><a href="#education">Education</a></li>
           <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
 
         <!-- Dark / Light Theme Toggle -->
@@ -82,6 +84,7 @@
     <a href="#achievements" class="mobile-nav-link">Achievements</a>
     <a href="#education" class="mobile-nav-link">Education</a>
     <a href="#skills" class="mobile-nav-link">Skills</a>
+    <a href="#contact" class="mobile-nav-link">Contact</a>
   </aside>
 
   <div class="container">
@@ -465,6 +468,54 @@
       </div>
     </section>
 
+    <!-- Contact Section -->
+    <section id="contact">
+      <div class="section-header fade-in">
+        <h2 class="section-title">Get In Touch</h2>
+      </div>
+
+      <div class="card fade-in" style="max-width: 580px; margin: 0 auto;">
+        <form id="contactForm" novalidate>
+          <div class="form-group">
+            <label for="contactName">Full Name</label>
+            <input 
+              type="text" 
+              id="contactName" 
+              placeholder="e.g. John Doe" 
+              required 
+              minlength="2"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="contactPhone">Phone Number</label>
+            <input 
+              type="tel" 
+              id="contactPhone" 
+              placeholder="e.g. +91 9150339667" 
+              required 
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="contactEmail">Email Address</label>
+            <input 
+              type="email" 
+              id="contactEmail" 
+              placeholder="e.g. john@example.com" 
+              required 
+            />
+          </div>
+
+          <button type="submit" id="submitBtn" class="form-submit-btn">
+            Send Message
+          </button>
+
+          <p id="formStatus" class="form-status"></p>
+        </form>
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer>
       <p style="margin-bottom: 0.5rem;">
@@ -473,7 +524,7 @@
           LinkedIn
         </a>
       </p>
-      <p>&copy; 2026 Manekar Mohammed Zuhaib. All rights reserved.No need to worry.</p>
+      <p>&copy; 2026 Manekar Mohammed Zuhaib. All rights reserved.</p>
     </footer>
   </div>
 
@@ -562,6 +613,57 @@
             });
           }
         });
+      });
+
+      // 5. Contact Form Submission (Python/MySQL Bridge)
+      const contactForm = document.getElementById('contactForm');
+      const formStatus = document.getElementById('formStatus');
+      const submitBtn = document.getElementById('submitBtn');
+
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const payload = {
+          name: document.getElementById('contactName').value.trim(),
+          phone: document.getElementById('contactPhone').value.trim(),
+          email: document.getElementById('contactEmail').value.trim()
+        };
+
+        if (!payload.name || !payload.phone || !payload.email) {
+          formStatus.textContent = 'Please fill out all fields.';
+          formStatus.className = 'form-status error';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        formStatus.textContent = '';
+
+        try {
+          // Pointing to your local Flask server on port 5000
+          const response = await fetch('http://localhost:5000/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            formStatus.textContent = data.message;
+            formStatus.className = 'form-status success';
+            contactForm.reset();
+          } else {
+            formStatus.textContent = data.message || 'Submission failed.';
+            formStatus.className = 'form-status error';
+          }
+        } catch (err) {
+          formStatus.textContent = 'Could not connect to the backend server.';
+          formStatus.className = 'form-status error';
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+        }
       });
     });
   </script>
