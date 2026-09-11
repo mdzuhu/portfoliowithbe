@@ -1,47 +1,70 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import mysql.connector
+import os
+import json
 import re
 import datetime
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 
 app = Flask(__name__)
+# Enable CORS for your Vercel frontend and local testing
 CORS(app)
 
-# MySQL Database Configuration
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'Zuhu1902',  # Your MySQL root password
-    'database': 'portfolio_db'
-}
+# Database credentials
+DB_HOST = os.environ.get('DB_HOST', 'localhost')
+DB_USER = os.environ.get('DB_USER', 'root')
+DB_PASSWORD = os.environ.get('DB_PASSWORD', 'YOUR_ACTUAL_ROOT_PASSWORD')  # Replace with your local MySQL password
+DB_NAME = os.environ.get('DB_NAME', 'portfolio_db')
 
-# Google Sheets Configuration
-SCOPE = [
-    "https://spreadsheets.google.com/feeds",
-    "https://www.googleapis.com/auth/drive"
-]
+def get_gspread_client():
+    """
+    Authenticate with Google Sheets.
+    Uses environment variable on Render, falls back to local credentials.json.
+    """
+    if "GOOGLE_CREDENTIALS" in os.environ:
+        creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+        return gspread.service_account_from_dict(creds_dict)
+    return gspread.service_account(filename="credentials.json")
 
 def append_to_google_sheet(name, phone, email):
+    """Logs the submitted contact details to Google Sheets."""
     try:
-        creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", SCOPE)
-        client = gspread.authorize(creds)
-        
-        # Open by title
-        sheet = client.open("Portfolio Contacts").sheet1
-        
-        # Current readable timestamp
+        gc = get_gspread_client()
+        sheet = gc.open("Portfolio Contacts").sheet1
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
-        # Append as a new row: [Timestamp, Name, Phone, Email]
         sheet.append_row([timestamp, name, phone, email])
+        print("Logged submission to Google Sheets successfully.")
     except Exception as e:
-        # Print error to terminal without blocking the response to the user
-        print(f"Failed to append to Google Sheets: {e}")
+        print(f"Warning: Failed to log to Google Sheets: {e}")
+
+def save_to_mysql(name, phone, email):
+    """Logs to MySQL when available, catches error gracefully if offline."""
+    try:
+        import mysql.connector
+        conn = mysql.connector.connect(
+            host=DB_HOST,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            database=DB_NAME,
+            connect_timeout=3
+        )
+        cursor = conn.cursor()
+        sql = "INSERT INTO contacts (name, phone, email) VALUES (%s, %s, %s)"
+        cursor.execute(sql, (name, phone, email))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        print("Logged to MySQL successfully.")
+    except Exception as e:
+        print(f"MySQL note: {e}")
 
 EMAIL_REGEX = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 PHONE_REGEX = r'^\+?[0-9\s\-]{7,15}$'
+
+@app.route('/', methods=['GET'])
+def health_check():
+    """Root route so Render's health checks pass instantly."""
+    return jsonify({"status": "healthy", "service": "portfolio-backend"}), 200
 
 @app.route('/api/contact', methods=['POST'])
 def handle_contact():
@@ -53,7 +76,7 @@ def handle_contact():
     phone = data.get('phone', '').strip()
     email = data.get('email', '').strip()
 
-    # Validation
+    # Form Validations
     if len(name) < 2:
         return jsonify({"status": "error", "message": "Please enter a valid name."}), 400
     if not re.match(PHONE_REGEX, phone):
@@ -61,23 +84,12 @@ def handle_contact():
     if not re.match(EMAIL_REGEX, email):
         return jsonify({"status": "error", "message": "Please enter a valid email address."}), 400
 
-    # 1. Insert into MySQL
-    try:
-        conn = mysql.connector.connect(**DB_CONFIG)
-        cursor = conn.cursor()
-        sql = "INSERT INTO contacts (name, phone, email) VALUES (%s, %s, %s)"
-        cursor.execute(sql, (name, phone, email))
-        conn.commit()
-        cursor.close()
-        conn.close()
-    except mysql.connector.Error as err:
-        return jsonify({"status": "error", "message": f"Database error: {err}"}), 500
-
-    # 2. Append to Google Sheets
+    # Save to databases
+    save_to_mysql(name, phone, email)
     append_to_google_sheet(name, phone, email)
 
     return jsonify({"status": "success", "message": "Thank you! Your message has been sent."}), 201
 
 if __name__ == '__main__':
-    print("Server running on http://127.0.0.1:5000")
-    app.run(port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
