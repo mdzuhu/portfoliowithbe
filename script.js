@@ -1,22 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.querySelector('form');
+    const contactForm = document.getElementById('contact-form');
+    const statusText = document.getElementById('form-status');
+    const submitBtn = document.getElementById('submit-btn');
+
     if (!contactForm) return;
 
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Adjust input selectors to match your HTML input names/ids
-        const name = contactForm.querySelector('[name="name"]')?.value || contactForm.querySelector('#name')?.value;
-        const phone = contactForm.querySelector('[name="phone"]')?.value || contactForm.querySelector('#phone')?.value;
-        const email = contactForm.querySelector('[name="email"]')?.value || contactForm.querySelector('#email')?.value;
+        const name = document.getElementById('name').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const email = document.getElementById('email').value.trim();
 
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalBtnText = submitBtn ? submitBtn.innerText : 'Send';
-
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Sending...';
-        }
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Sending...';
+        if (statusText) statusText.innerText = '';
 
         try {
             const response = await fetch('https://portfolio-backend-sr55.onrender.com/api/contact', {
@@ -30,19 +28,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (response.ok) {
-                alert(result.message || 'Message sent successfully!');
+                if (statusText) {
+                    statusText.style.color = '#4ade80';
+                    statusText.innerText = result.message || 'Message sent successfully!';
+                }
                 contactForm.reset();
             } else {
-                alert(result.message || 'Failed to submit form.');
+                if (statusText) {
+                    statusText.style.color = '#f87171';
+                    statusText.innerText = result.message || 'Failed to submit form.';
+                }
             }
         } catch (error) {
             console.error('Submission error:', error);
-            alert('Something went wrong. Please try again later.');
-        } finally {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerText = originalBtnText;
+            if (statusText) {
+                statusText.style.color = '#f87171';
+                statusText.innerText = 'Could not connect to the backend server.';
             }
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Send Message';
         }
     });
 });
