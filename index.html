@@ -1,112 +1,634 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zuhaib | Portfolio</title>
+  <title>Zuhaib's Portfolio</title>
+  
+  <!-- Critical Anti-Flicker Script for Theme Persistence -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+
+  <!-- SEO Meta Tags -->
+  <meta name="title" content="Manekar Mohammed Zuhaib | Portfolio & Student Leader" />
+  <meta name="description" content="Official portfolio of Manekar Mohammed Zuhaib — Student Leader, Innovator, and aspiring technologist recognized by the former President of ISRO." />
+  <meta name="keywords" content="Manekar Mohammed Zuhaib, Manekar Zuhaib, Zuhaib portfolio, Manekar Mohammed Zuhaib portfolio, Al Hira Model School" />
+  <meta name="author" content="Manekar Mohammed Zuhaib" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Manekar Mohammed Zuhaib | Portfolio" />
+  <meta property="og:description" content="Official portfolio of Manekar Mohammed Zuhaib — Student Leader and Innovator based in Chennai." />
+
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Navigation -->
-  <header>
-    <nav class="navbar">
-      <div class="logo">Zuhaib<span>.</span></div>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span class="logo-diamond">
+          <span class="diamond-text">ZP</span>
+        </span>
+        <span>Zuhaib's Portfolio</span>
+      </a>
 
-  <!-- Hero Section -->
-  <main>
-    <section id="hero" class="hero-section">
-      <div class="hero-content">
-        <h1>Hi, I'm <span class="highlight">Zuhaib</span></h1>
-        <p class="subtitle">Full-Stack Developer & Software Engineer</p>
-        <a href="#contact" class="btn primary-btn">Get In Touch</a>
-      </div>
-    </section>
+      <div class="nav-right">
+        <!-- Desktop Nav Links -->
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#achievements">Achievements</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
 
-    <!-- About Section -->
-    <section id="about" class="section">
-      <h2>About Me</h2>
-      <p>
-        Welcome to my portfolio! I build performant, responsive web applications
-        and automated workflows that connect frontend user experiences with robust
-        backend services.
-      </p>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="section">
-      <h2>Projects</h2>
-      <div class="project-grid">
-        <article class="project-card">
-          <h3>Full-Stack Portfolio</h3>
-          <p>
-            Personal portfolio integrated with a Flask backend, Google Sheets API
-            automation, and dual data logging.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section contact-section">
-      <h2>Get In Touch</h2>
-      <p>Have a project or opportunity? Send me a message below.</p>
-
-      <form id="contact-form" class="contact-form">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input 
-            type="text" 
-            id="name" 
-            name="name" 
-            placeholder="Your Name" 
-            required 
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="phone">Phone</label>
-          <input 
-            type="tel" 
-            id="phone" 
-            name="phone" 
-            placeholder="+1 234 567 8900" 
-            required 
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            placeholder="name@example.com" 
-            required 
-          />
-        </div>
-
-        <button type="submit" id="submit-btn" class="btn submit-btn">
-          Send Message
+        <!-- Dark / Light Theme Toggle -->
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme">
+          <span id="themeIcon">🌙</span>
         </button>
-      </form>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="hamburgerBtn" class="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer Overlay -->
+  <div id="mobileNavOverlay" class="mobile-nav-overlay"></div>
+
+  <!-- Mobile Slide-Out Glass Drawer -->
+  <aside id="mobileNavDrawer" class="mobile-nav-drawer" aria-label="Mobile Navigation">
+    <a href="#about" class="mobile-nav-link">About</a>
+    <a href="#experience" class="mobile-nav-link">Experience</a>
+    <a href="#achievements" class="mobile-nav-link">Achievements</a>
+    <a href="#education" class="mobile-nav-link">Education</a>
+    <a href="#skills" class="mobile-nav-link">Skills</a>
+    <a href="#contact" class="mobile-nav-link">Contact</a>
+  </aside>
+
+  <div class="container">
+    <!-- Hero Section -->
+    <header class="hero fade-in" id="about">
+      <div class="hero-badge">✦ Available for Opportunities</div>
+      <h1>Manekar Mohammed Zuhaib</h1>
+      <p class="subtitle">Student Leader & Innovator</p>
+      <p>
+        Ambitious high school student with four years of leadership experience,
+        recognized for innovation by the former President of ISRO. Passionate about
+        technology, public speaking, hardware, graphic design, and business analysis.
+      </p>
+      <div class="contact-info">
+        <a href="https://www.linkedin.com/in/zuhaibmd" target="_blank" rel="noopener noreferrer">
+          🔗 LinkedIn Profile
+        </a>
+        <a href="mailto:manekar.zuhaib@gmail.com">✉ manekar.zuhaib@gmail.com</a>
+        <a href="tel:+919150339667">📞 +91 9150339667</a>
+        <span>📍 Chennai, India</span>
+      </div>
+    </header>
+
+    <!-- Experience Section -->
+    <section id="experience">
+      <div class="section-header fade-in">
+        <h2 class="section-title">Leadership & Experience</h2>
+      </div>
+      <div class="experience-list">
+        <div class="experience-card fade-in">
+          <div class="experience-grid">
+            <div class="experience-col-meta">
+              <span class="badge">2024 – 2026</span>
+              <h3>Al Hira Model School</h3>
+              <p class="role-title">Assistant School Pupil Leader & Red House Captain</p>
+            </div>
+            <div class="experience-col-content">
+              <ul>
+                <li>Led an 8-member student council team using a servant-leadership approach to support school operations and community development.</li>
+                <li>Provided active student leadership that contributed toward the school being ranked 7th across Tamil Nadu.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="experience-card fade-in">
+          <div class="experience-grid">
+            <div class="experience-col-meta">
+              <span class="badge">2020 – 2026</span>
+              <h3>North Town Islamic Centre</h3>
+              <p class="role-title">Volunteer & Graphic Designer</p>
+            </div>
+            <div class="experience-col-content">
+              <ul>
+                <li>Volunteered as lead graphic designer, redesigning the organization's complete brand identity and media collateral.</li>
+                <li>Collaborated on visual and conceptual layouts supporting the architectural and promotional design for the new mosque.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
-  </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 Zuhaib. All rights reserved.</p>
-  </footer>
+    <!-- Achievements Section -->
+    <section id="achievements">
+      <div class="section-header fade-in">
+        <h2 class="section-title">Key Achievements</h2>
+      </div>
+      <div class="grid">
+        <div class="card fade-in">
+          <div class="card-header">
+            <h3>ISRO Innovation Recognition</h3>
+            <span class="badge">Honour</span>
+          </div>
+          <p class="meta">Former President of ISRO</p>
+          <p style="color: var(--text-muted);">
+            Recognized and commended for exceptional innovative thinking, problem-solving, and creativity.
+          </p>
+        </div>
 
-  <!-- External Script -->
-  <script src="script.js"></script>
+        <div class="card fade-in">
+          <div class="card-header">
+            <h3>Olympiad Competition</h3>
+            <span class="badge">1st Place</span>
+          </div>
+          <p class="meta">School Level</p>
+          <p style="color: var(--text-muted);">
+            Secured First Place in the school Olympiad competition, showcasing analytical aptitude and academic discipline.
+          </p>
+        </div>
+
+        <div class="card fade-in">
+          <div class="card-header">
+            <h3>Leadership & Speaking</h3>
+            <span class="badge">Distinction</span>
+          </div>
+          <p class="meta">Public Speaking & Events</p>
+          <p style="color: var(--text-muted);">
+            Demonstrated continuous excellence in public speaking and successfully managed numerous campus initiatives and events.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education">
+      <div class="section-header fade-in">
+        <h2 class="section-title">Education</h2>
+      </div>
+      <div class="grid">
+        <div class="card fade-in">
+          <div class="card-header">
+            <h3>Al Hira Model School</h3>
+            <span class="badge">Class of 2027</span>
+          </div>
+          <p class="meta">CBSE Curriculum</p>
+          <ul>
+            <li>Class 10 Academic Performance: <strong>A+ Grade</strong></li>
+            <li>Active participant in academic, leadership, and extracurricular initiatives.</li>
+          </ul>
+        </div>
+
+        <div class="card fade-in">
+          <div class="card-header">
+            <h3>Asan Memorial School</h3>
+            <span class="badge">Primary</span>
+          </div>
+          <p class="meta">Foundational Education</p>
+          <p style="color: var(--text-muted);">Completed primary schooling up to 3rd Grade.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills & Ratings Section -->
+    <section id="skills">
+      <div class="section-header fade-in">
+        <h2 class="section-title">Skills & Ratings</h2>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 2.25rem;">
+        <div class="fade-in">
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.3rem;">Core Skills</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">
+            💡 <em>Click any skill to reveal proficiency (1–10).</em>
+          </p>
+          <div class="tags">
+            <div class="tag interactive-skill" data-score="4">
+              <div class="skill-label">
+                <span>Web Development</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">4 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="6">
+              <div class="skill-label">
+                <span>Web Deployment</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">6 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="4">
+              <div class="skill-label">
+                <span>Python</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">4 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="8">
+              <div class="skill-label">
+                <span>Hardware Technology</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">8 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="6">
+              <div class="skill-label">
+                <span>Graphic Design</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">6 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="6">
+              <div class="skill-label">
+                <span>Canva</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">6 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="7">
+              <div class="skill-label">
+                <span>Public Speaking</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">7 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="8">
+              <div class="skill-label">
+                <span>Leadership</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">8 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="7">
+              <div class="skill-label">
+                <span>Marketing</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">7 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="5">
+              <div class="skill-label">
+                <span>Microsoft Excel</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">5 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="6">
+              <div class="skill-label">
+                <span>Mathematics</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">6 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tag interactive-skill" data-score="8">
+              <div class="skill-label">
+                <span>Prompt Engineering</span>
+                <span class="hint-icon">▼</span>
+              </div>
+              <div class="rating-details">
+                <div class="rating-header">
+                  <span>Proficiency</span>
+                  <span class="score-text">8 / 10</span>
+                </div>
+                <div class="rating-bar-bg">
+                  <div class="rating-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fade-in">
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.85rem;">Certifications</h3>
+          <div class="tags">
+            <span class="tag">Google AI Essentials</span>
+            <span class="tag">Prompt Engineering Certification</span>
+            <span class="tag">Mastercard Business Analyst Certification</span>
+            <span class="tag">IBM Team Management Certificate</span>
+          </div>
+        </div>
+
+        <div class="fade-in">
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.85rem;">Languages</h3>
+          <div class="tags">
+            <span class="tag">English</span>
+            <span class="tag">Hindi</span>
+            <span class="tag">Tamil</span>
+            <span class="tag">French (Beginner)</span>
+            <span class="tag">Arabic (Reading &amp; Writing)</span>
+          </div>
+        </div>
+
+        <div class="fade-in">
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.85rem;">Extracurricular & Interests</h3>
+          <div class="tags">
+            <span class="tag">Technology & Innovation Projects</span>
+            <span class="tag">Creative Media</span>
+            <span class="tag">Football</span>
+            <span class="tag">Swimming</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Me Section -->
+    <section id="contact">
+      <div class="section-header fade-in">
+        <h2 class="section-title">Get In Touch</h2>
+      </div>
+      <div class="contact-container fade-in">
+        <div class="card contact-card">
+          <form id="contactForm" class="contact-form">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="Your name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+91 9876543210" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" required />
+            </div>
+
+            <button type="submit" id="submitBtn" class="submit-btn">Send Message</button>
+            <p id="formStatus" class="form-status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p style="margin-bottom: 0.5rem;">
+        Connect with me on 
+        <a href="https://www.linkedin.com/in/zuhaibmd" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 700; text-decoration: underline;">
+          LinkedIn
+        </a>
+      </p>
+      <p>&copy; 2026 Manekar Mohammed Zuhaib. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Optimized JavaScript Execution -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Theme Toggle Logic
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const htmlEl = document.documentElement;
+
+      function updateThemeIcon(theme) {
+        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+      }
+
+      updateThemeIcon(htmlEl.getAttribute('data-theme'));
+
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = htmlEl.getAttribute('data-theme');
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        htmlEl.setAttribute('data-theme', nextTheme);
+        localStorage.setItem('theme', nextTheme);
+        updateThemeIcon(nextTheme);
+      });
+
+      // 2. Mobile Hamburger Menu & Slide Drawer Logic
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+      const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+      function toggleMobileMenu(isOpen) {
+        hamburgerBtn.classList.toggle('is-active', isOpen);
+        mobileNavDrawer.classList.toggle('is-active', isOpen);
+        mobileNavOverlay.classList.toggle('is-active', isOpen);
+        hamburgerBtn.setAttribute('aria-expanded', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      }
+
+      hamburgerBtn.addEventListener('click', () => {
+        const isOpening = !mobileNavDrawer.classList.contains('is-active');
+        toggleMobileMenu(isOpening);
+      });
+
+      mobileNavOverlay.addEventListener('click', () => toggleMobileMenu(false));
+
+      mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => toggleMobileMenu(false));
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileNavDrawer.classList.contains('is-active')) {
+          toggleMobileMenu(false);
+        }
+      });
+
+      // 3. Scroll Reveal via Intersection Observer
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.fade-in').forEach(el => revealObserver.observe(el));
+
+      // 4. Interactive Skill Tag & Progress Bar Animation
+      document.querySelectorAll('.interactive-skill').forEach(card => {
+        card.addEventListener('click', () => {
+          const isActive = card.classList.contains('active');
+          const fillBar = card.querySelector('.rating-bar-fill');
+          const score = card.getAttribute('data-score');
+          const percentage = (score / 10) * 100;
+
+          if (isActive) {
+            card.classList.remove('active');
+            fillBar.style.width = '0%';
+          } else {
+            card.classList.add('active');
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                fillBar.style.width = percentage + '%';
+              }, 60);
+            });
+          }
+        });
+      });
+
+      // 5. Cloud Contact Form Handler
+      const contactForm = document.getElementById('contactForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const formStatus = document.getElementById('formStatus');
+
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const email = document.getElementById('email').value.trim();
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        formStatus.textContent = '';
+
+        try {
+          // Pointing directly to your live Render endpoint
+          const response = await fetch('https://portfolio-backend-sr55.onrender.com/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, phone, email })
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            formStatus.style.color = 'var(--primary)';
+            formStatus.textContent = result.message || 'Message sent successfully!';
+            contactForm.reset();
+          } else {
+            formStatus.style.color = '#e53e3e';
+            formStatus.textContent = result.message || 'Error sending message.';
+          }
+        } catch (err) {
+          formStatus.style.color = '#e53e3e';
+          formStatus.textContent = 'Could not connect to the backend server.';
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
