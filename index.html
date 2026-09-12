@@ -456,7 +456,7 @@
       </div>
     </section>
 
-    <!-- Contact Me Section -->
+   <!-- Contact Me Section -->
     <section id="contact">
       <div class="section-header fade-in">
         <h2 class="section-title">Get In Touch</h2>
@@ -471,7 +471,30 @@
 
             <div class="form-group">
               <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" placeholder="+91 9876543210" required />
+              <div class="phone-input-group">
+                <select id="countryCode" name="countryCode" class="country-select" aria-label="Country Code">
+                  <option value="+91" data-max="10" selected>🇮🇳 +91 (India)</option>
+                  <option value="+1" data-max="10">🇺🇸 +1 (US/Canada)</option>
+                  <option value="+44" data-max="10">🇬🇧 +44 (UK)</option>
+                  <option value="+971" data-max="9">🇦🇪 +971 (UAE)</option>
+                  <option value="+966" data-max="9">🇸🇦 +966 (Saudi Arabia)</option>
+                  <option value="+65" data-max="8">🇸🇬 +65 (Singapore)</option>
+                  <option value="+61" data-max="9">🇦🇺 +61 (Australia)</option>
+                  <option value="+49" data-max="11">🇩🇪 +49 (Germany)</option>
+                  <option value="+33" data-max="9">🇫🇷 +33 (France)</option>
+                  <option value="+81" data-max="10">🇯🇵 +81 (Japan)</option>
+                </select>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  name="phone" 
+                  placeholder="9876543210" 
+                  maxlength="10" 
+                  inputmode="numeric"
+                  required 
+                />
+              </div>
+              <span id="phoneHint" class="input-hint">Enter 10 digits</span>
             </div>
 
             <div class="form-group">
@@ -498,7 +521,7 @@
     </footer>
   </div>
 
-  <!-- Optimized JavaScript Execution -->
+ <!-- Optimized JavaScript Execution -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // 1. Theme Toggle Logic
@@ -585,18 +608,53 @@
         });
       });
 
-      // 5. Cloud Contact Form Handler
+      // 5. Cloud Contact Form Handler with Country Code Limiting
       const contactForm = document.getElementById('contactForm');
+      const countryCodeSelect = document.getElementById('countryCode');
+      const phoneInput = document.getElementById('phone');
+      const phoneHint = document.getElementById('phoneHint');
       const submitBtn = document.getElementById('submitBtn');
       const formStatus = document.getElementById('formStatus');
+
+      // Adjust max length dynamically when country changes
+      function updatePhoneConstraint() {
+        const selectedOption = countryCodeSelect.options[countryCodeSelect.selectedIndex];
+        const maxLen = selectedOption.getAttribute('data-max') || '10';
+        phoneInput.maxLength = maxLen;
+        phoneHint.textContent = `Enter ${maxLen} digits`;
+        if (phoneInput.value.length > parseInt(maxLen)) {
+          phoneInput.value = phoneInput.value.slice(0, parseInt(maxLen));
+        }
+      }
+
+      if (countryCodeSelect && phoneInput) {
+        countryCodeSelect.addEventListener('change', updatePhoneConstraint);
+
+        // Disallow non-numeric typing
+        phoneInput.addEventListener('input', () => {
+          phoneInput.value = phoneInput.value.replace(/\D/g, '');
+        });
+      }
 
       if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
           e.preventDefault();
 
           const name = document.getElementById('name').value.trim();
-          const phone = document.getElementById('phone').value.trim();
+          const rawPhone = phoneInput.value.trim();
+          const selectedCode = countryCodeSelect.value;
           const email = document.getElementById('email').value.trim();
+          const requiredLen = parseInt(phoneInput.maxLength);
+
+          // Front-end length validation
+          if (rawPhone.length !== requiredLen) {
+            formStatus.style.color = '#e53e3e';
+            formStatus.textContent = `Please enter exactly ${requiredLen} digits for ${selectedCode}.`;
+            return;
+          }
+
+          // Combined phone format (e.g. +91 9876543210)
+          const fullPhone = `${selectedCode} ${rawPhone}`;
 
           submitBtn.disabled = true;
           submitBtn.textContent = 'Sending...';
@@ -606,7 +664,7 @@
             const response = await fetch('https://portfolio-backend-zuhaib.onrender.com/api/contact', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name, phone, email })
+              body: JSON.stringify({ name, phone: fullPhone, email })
             });
 
             const result = await response.json();
@@ -615,6 +673,7 @@
               formStatus.style.color = 'var(--primary)';
               formStatus.textContent = result.message || 'Thank you! Your message has been sent.';
               contactForm.reset();
+              updatePhoneConstraint();
             } else {
               formStatus.style.color = '#e53e3e';
               formStatus.textContent = result.message || 'Error sending message.';
@@ -630,6 +689,6 @@
       }
     });
   </script>
-
+  
 </body>
 </html>

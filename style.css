@@ -847,3 +847,45 @@ footer {
   min-height: 1.4rem;
   margin-top: 0.25rem;
 }
+/* Phone Input Group & Country Select */
+.phone-input-group {
+  display: flex;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.country-select {
+  background: var(--glass-button);
+  color: var(--text);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 0.85rem 0.75rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  outline: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  max-width: 165px;
+}
+
+.country-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.country-select option {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.phone-input-group input {
+  flex: 1;
+}
+
+.input-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
