@@ -4,92 +4,96 @@ import re
 import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import mysql.connector
 import gspread
 
 app = Flask(__name__)
-# Enable CORS for your Vercel frontend and local testing
 CORS(app)
 
-# Database credentials
-DB_HOST = os.environ.get('DB_HOST', 'localhost')
-DB_USER = os.environ.get('DB_USER', 'root')
-DB_PASSWORD = os.environ.get('DB_PASSWORD', 'YOUR_ACTUAL_ROOT_PASSWORD')  # Replace with your local MySQL password
-DB_NAME = os.environ.get('DB_NAME', 'portfolio_db')
+# MySQL Connection Configurations
+DB_HOST = os.environ.get("DB_HOST", "localhost")
+DB_USER = os.environ.get("DB_USER", "root")
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
+DB_NAME = os.environ.get("DB_NAME", "portfolio_db")
+DB_PORT = int(os.environ.get("DB_PORT", 3306))
 
 def get_gspread_client():
-    """
-    Authenticate with Google Sheets.
-    Uses environment variable on Render, falls back to local credentials.json.
-    """
+    """Authenticates gspread using Render Environment Variable or local file."""
     if "GOOGLE_CREDENTIALS" in os.environ:
         creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
         return gspread.service_account_from_dict(creds_dict)
-    return gspread.service_account(filename="credentials.json")
-
-def append_to_google_sheet(name, phone, email):
-    """Logs the submitted contact details to Google Sheets."""
-    try:
-        gc = get_gspread_client()
-        sheet = gc.open("Portfolio Contacts").sheet1
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        sheet.append_row([timestamp, name, phone, email])
-        print("Logged submission to Google Sheets successfully.")
-    except Exception as e:
-        print(f"Warning: Failed to log to Google Sheets: {e}")
+    if os.path.exists("credentials.json"):
+        return gspread.service_account(filename="credentials.json")
+    return None
 
 def save_to_mysql(name, phone, email):
-    """Logs to MySQL when available, catches error gracefully if offline."""
-    try:
-        import mysql.connector
-        conn = mysql.connector.connect(
-            host=DB_HOST,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            database=DB_NAME,
-            connect_timeout=3
-        )
-        cursor = conn.cursor()
-        sql = "INSERT INTO contacts (name, phone, email) VALUES (%s, %s, %s)"
-        cursor.execute(sql, (name, phone, email))
-        conn.commit()
-        cursor.close()
-        conn.close()
-        print("Logged to MySQL successfully.")
-    except Exception as e:
-        print(f"MySQL note: {e}")
+    """Inserts contact record into MySQL database."""
+    conn = mysql.connector.connect(
+        host=DB_HOST,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME,
+        port=DB_PORT,
+        connect_timeout=5
+    )
+    cursor = conn.cursor()
+    query = "INSERT INTO contacts (name, phone, email) VALUES (%s, %s, %s)"
+    cursor.execute(query, (name, phone, email))
+    conn.commit()
+    cursor.close()
+    conn.close()
 
-EMAIL_REGEX = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-PHONE_REGEX = r'^\+?[0-9\s\-]{7,15}$'
+def save_to_sheets(name, phone, email):
+    """Appends submission row with timestamp to Google Sheets."""
+    gc = get_gspread_client()
+    if not gc:
+        raise Exception("Google credentials not configured.")
+    
+    sheet = gc.open("Portfolio Contacts").sheet1
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    sheet.append_row([timestamp, name, phone, email])
 
-@app.route('/', methods=['GET'])
-def health_check():
-    """Root route so Render's health checks pass instantly."""
-    return jsonify({"status": "healthy", "service": "portfolio-backend"}), 200
+@app.route("/", methods=["GET"])
+def health():
+    return jsonify({"status": "healthy"}), 200
 
-@app.route('/api/contact', methods=['POST'])
-def handle_contact():
-    data = request.get_json()
-    if not data:
-        return jsonify({"status": "error", "message": "No data received."}), 400
+@app.route("/api/contact", methods=["POST"])
+def contact():
+    data = request.get_json() or {}
+    name = data.get("name", "").strip()
+    phone = data.get("phone", "").strip()
+    email = data.get("email", "").strip()
 
-    name = data.get('name', '').strip()
-    phone = data.get('phone', '').strip()
-    email = data.get('email', '').strip()
-
-    # Form Validations
+    # Validations
     if len(name) < 2:
-        return jsonify({"status": "error", "message": "Please enter a valid name."}), 400
-    if not re.match(PHONE_REGEX, phone):
-        return jsonify({"status": "error", "message": "Please enter a valid phone number."}), 400
-    if not re.match(EMAIL_REGEX, email):
-        return jsonify({"status": "error", "message": "Please enter a valid email address."}), 400
+        return jsonify({"message": "Please enter a valid name."}), 400
+    if not re.match(r"^\+?[0-9\s\-]{7,15}$", phone):
+        return jsonify({"message": "Please enter a valid phone number."}), 400
+    if not re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", email):
+        return jsonify({"message": "Please enter a valid email address."}), 400
 
-    # Save to databases
-    save_to_mysql(name, phone, email)
-    append_to_google_sheet(name, phone, email)
+    errors = []
 
-    return jsonify({"status": "success", "message": "Thank you! Your message has been sent."}), 201
+    # 1. MySQL Entry
+    try:
+        save_to_mysql(name, phone, email)
+    except Exception as e:
+        print(f"MySQL error: {e}")
+        errors.append("mysql")
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    # 2. Simultaneous Google Sheets Entry
+    try:
+        save_to_sheets(name, phone, email)
+    except Exception as e:
+        print(f"Google Sheets error: {e}")
+        errors.append("sheets")
+
+    # If both failed completely, notify the user
+    if len(errors) == 2:
+        return jsonify({"message": "Database services temporarily unavailable."}), 500
+
+    return jsonify({"message": "Thank you! Your message has been sent."}), 201
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
