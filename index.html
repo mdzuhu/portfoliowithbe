@@ -534,6 +534,26 @@
 
  <!-- Optimized JavaScript Execution -->
   <script>
+    // Silent Render Cold-Start Ping
+    let hasWarmedBackend = false;
+    const wakeUpBackend = () => {
+      if (hasWarmedBackend) return;
+      hasWarmedBackend = true;
+
+      // Silently call root health-check endpoint
+      fetch('https://portfolio-backend-zuhaib.onrender.com/', { method: 'GET' })
+        .catch(() => {
+          // Ignore network errors - it's just a background warmup ping
+        });
+
+      // Detach wake-up listeners once triggered
+      window.removeEventListener('scroll', wakeUpBackend);
+      document.removeEventListener('mousemove', wakeUpBackend);
+    };
+
+    // Trigger on first user scroll or mouse movement
+    window.addEventListener('scroll', wakeUpBackend, { passive: true, once: true });
+    document.addEventListener('mousemove', wakeUpBackend, { passive: true, once: true });
     document.addEventListener('DOMContentLoaded', () => {
       // 1. Theme Toggle Logic
       const themeToggle = document.getElementById('themeToggle');
