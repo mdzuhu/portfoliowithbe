@@ -889,3 +889,51 @@ footer {
   color: var(--text-muted);
   margin-top: 0.2rem;
 }
+/* Resume Download Action */
+.resume-download-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.resume-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--glass-button);
+  color: var(--text);
+  border: 1px solid var(--primary);
+  border-radius: 14px;
+  padding: 1rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: 
+    transform 0.3s var(--ease-spring),
+    box-shadow 0.3s var(--ease-smooth),
+    background-color 0.3s ease;
+}
+
+.resume-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  background: var(--primary);
+  color: #0d120a;
+  box-shadow: 0 12px 30px var(--primary-glow);
+}
+
+.resume-btn:active {
+  transform: scale(0.97);
+}
+
+.resume-btn .btn-icon {
+  font-size: 1.25rem;
+  transition: transform 0.3s var(--ease-spring);
+}
+
+.resume-btn:hover .btn-icon {
+  transform: translateY(-2px) rotate(-6deg);
+}
