@@ -5,6 +5,8 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Manekar Mohammed Zuhaib portfolio" />
+  <meta name="description" content="Official portfolio of Manekar Mohammed Zuhaib — Student of Al Hira Model School" />
   <title>Zuhaib's Portfolio</title>
   
   <!-- Critical Anti-Flicker Script for Theme Persistence -->
@@ -464,6 +466,11 @@
       <div class="contact-container fade-in">
         <div class="card contact-card">
           <form id="contactForm" class="contact-form">
+            <!-- Honeypot Anti-Bot Field (Hidden from humans) -->
+            <div style="display: none !important; opacity: 0; position: absolute; left: -9999px;">
+              <label for="website_url">Leave this empty</label>
+              <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" />
+            </div>
             <div class="form-group">
               <label for="name">Full Name</label>
               <input type="text" id="name" name="name" placeholder="Your name" required />
@@ -670,6 +677,15 @@
       if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
           e.preventDefault();
+          const honeypot = document.getElementById('website_url').value;
+
+      // Inside your fetch body:
+      body: JSON.stringify({ 
+        name, 
+        phone: fullPhone, 
+        email,
+        website_url: honeypot 
+      })
 
           const name = document.getElementById('name').value.trim();
           const rawPhone = phoneInput.value.trim();
