@@ -1,76 +1,59 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Warm Beige & Olive Light Theme */
-  --bg: #f4efe6;
-  --primary: #4a5d23;
-  --primary-hover: #374619;
-  --primary-light: rgba(74, 93, 35, 0.12);
-  --primary-glow: rgba(74, 93, 35, 0.28);
-  
-  --text: #1d2218;
-  --text-muted: #5f6555;
-  
-  /* Glass Surface Tokens */
-  --glass-surface: rgba(255, 253, 248, 0.62);
-  --glass-surface-hover: rgba(255, 253, 248, 0.82);
-  --glass-button: rgba(255, 255, 255, 0.55);
-  --glass-button-hover: rgba(255, 255, 255, 0.85);
-  
-  /* Glass Borders */
-  --glass-border: rgba(255, 255, 255, 0.65);
-  --glass-border-subtle: rgba(74, 93, 35, 0.14);
-  --glass-border-hover: rgba(74, 93, 35, 0.35);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+  --duration-normal: 0.4s;
 
-  /* Glass Depth Shadows */
-  --glass-shadow: 
-    0 8px 32px 0 rgba(40, 44, 36, 0.07),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.85),
-    inset 0 -1px 1px 0 rgba(74, 93, 35, 0.05);
+  /* Pure white surface with royal blue accents */
+  --bg: #ffffff;
+  --surface: rgba(243, 247, 254, 0.9);
+  --text: #0f172a;
+  --text-muted: #475569;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: rgba(37, 99, 235, 0.12);
+  --primary-glow: rgba(37, 99, 235, 0.25);
 
-  --glass-shadow-hover: 
-    0 16px 40px 0 rgba(74, 93, 35, 0.14),
-    inset 0 1px 2px 0 rgba(255, 255, 255, 0.95);
-
-  --nav-bg: rgba(244, 239, 230, 0.65);
-  --active-chip-bg: rgba(255, 255, 255, 0.88);
-  --track-bg: rgba(40, 44, 36, 0.08);
-
+  --glass-surface: var(--surface);
+  --glass-surface-hover: rgba(243, 247, 254, 1);
+  --glass-button: rgba(37, 99, 235, 0.07);
+  --glass-button-hover: rgba(37, 99, 235, 0.14);
+  --glass-border: rgba(37, 99, 235, 0.16);
+  --glass-border-subtle: rgba(37, 99, 235, 0.1);
+  --glass-border-hover: rgba(37, 99, 235, 0.35);
+  --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.07), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  --glass-shadow-hover: 0 16px 40px rgba(37, 99, 235, 0.14), inset 0 1px 2px rgba(255, 255, 255, 0.95);
+  --nav-bg: rgba(255, 255, 255, 0.72);
+  --active-chip-bg: rgba(243, 247, 254, 0.95);
+  --track-bg: rgba(15, 23, 42, 0.08);
   --radius: 20px;
   --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Deep Forest Glass Dark Theme */
 [data-theme="dark"] {
-  --bg: #11140e;
-  --primary: #9fc160;
-  --primary-hover: #b4d872;
-  --primary-light: rgba(159, 193, 96, 0.16);
-  --primary-glow: rgba(159, 193, 96, 0.35);
-  
-  --text: #f0f3eb;
-  --text-muted: #a3ab97;
-  
-  --glass-surface: rgba(24, 30, 20, 0.68);
-  --glass-surface-hover: rgba(32, 40, 26, 0.85);
-  --glass-button: rgba(30, 38, 25, 0.65);
-  --glass-button-hover: rgba(42, 52, 35, 0.9);
-  
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-subtle: rgba(159, 193, 96, 0.2);
-  --glass-border-hover: rgba(159, 193, 96, 0.45);
+  --bg: #121316;
+  --surface: rgba(26, 28, 33, 0.8);
+  --text: #f3f4f6;
+  --text-muted: #9ca3af;
+  --primary: #3b82f6;
+  --primary-hover: #60a5fa;
+  --primary-light: rgba(59, 130, 246, 0.16);
+  --primary-glow: rgba(59, 130, 246, 0.35);
 
-  --glass-shadow: 
-    0 8px 32px 0 rgba(0, 0, 0, 0.38),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4);
-
-  --glass-shadow-hover: 
-    0 16px 40px 0 rgba(0, 0, 0, 0.55),
-    inset 0 1px 2px 0 rgba(255, 255, 255, 0.25);
-
-  --nav-bg: rgba(17, 20, 14, 0.72);
-  --active-chip-bg: rgba(32, 40, 26, 0.95);
+  --glass-surface: var(--surface);
+  --glass-surface-hover: rgba(32, 34, 40, 0.92);
+  --glass-button: rgba(255, 255, 255, 0.05);
+  --glass-button-hover: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-border-subtle: rgba(255, 255, 255, 0.07);
+  --glass-border-hover: rgba(59, 130, 246, 0.45);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.38), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  --glass-shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  --nav-bg: rgba(18, 19, 22, 0.78);
+  --active-chip-bg: rgba(32, 34, 40, 0.95);
   --track-bg: rgba(255, 255, 255, 0.1);
 }
 
@@ -102,10 +85,10 @@ body {
 
 [data-theme="dark"] body {
   background-image: 
-    radial-gradient(circle at 12% 18%, rgba(74, 93, 35, 0.35) 0%, transparent 45%),
-    radial-gradient(circle at 88% 30%, rgba(45, 55, 30, 0.4) 0%, transparent 50%),
-    radial-gradient(circle at 50% 75%, rgba(65, 82, 36, 0.3) 0%, transparent 55%),
-    radial-gradient(circle at 20% 95%, rgba(30, 38, 20, 0.45) 0%, transparent 50%);
+    radial-gradient(circle at 12% 18%, rgba(37, 99, 235, 0.28) 0%, transparent 45%),
+    radial-gradient(circle at 88% 30%, rgba(30, 64, 175, 0.32) 0%, transparent 50%),
+    radial-gradient(circle at 50% 75%, rgba(59, 130, 246, 0.24) 0%, transparent 55%),
+    radial-gradient(circle at 20% 95%, rgba(17, 24, 39, 0.5) 0%, transparent 50%);
 }
 
 /* Glassmorphic Navbar */
@@ -149,7 +132,7 @@ nav {
 .logo-diamond {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, rgba(92, 116, 46, 0.95), rgba(62, 79, 27, 0.95));
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.95), rgba(29, 78, 216, 0.95));
   border-radius: 8px;
   transform: rotate(45deg);
   display: inline-flex;
@@ -157,14 +140,14 @@ nav {
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 
-    0 6px 14px rgba(74, 93, 35, 0.25),
+    0 6px 14px rgba(37, 99, 235, 0.25),
     inset 0 1px 1px rgba(255, 255, 255, 0.6);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
   flex-shrink: 0;
 }
 
 [data-theme="dark"] .logo-diamond {
-  background: linear-gradient(135deg, rgba(159, 193, 96, 0.95), rgba(92, 116, 46, 0.95));
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.95), rgba(37, 99, 235, 0.95));
 }
 
 .diamond-text {
@@ -181,7 +164,7 @@ nav {
 
 .nav-logo:hover .logo-diamond {
   transform: rotate(225deg);
-  box-shadow: 0 8px 20px rgba(74, 93, 35, 0.35);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
 }
 
 .nav-logo:hover .diamond-text {
@@ -666,7 +649,7 @@ section {
   background: var(--active-chip-bg);
   border-color: var(--primary);
   box-shadow: 
-    0 12px 28px rgba(74, 93, 35, 0.18),
+    0 12px 28px rgba(37, 99, 235, 0.18),
     inset 0 1px 2px rgba(255, 255, 255, 0.4);
 }
 
