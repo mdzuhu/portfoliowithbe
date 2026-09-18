@@ -459,62 +459,65 @@
     </section>
 
    <!-- Contact Me Section -->
-    <section id="contact">
-      <div class="section-header fade-in">
-        <h2 class="section-title">Get In Touch</h2>
+   <!-- Contact Me Section -->
+  <section id="contact">
+    <div class="section-header fade-in">
+      <h2 class="section-title">Get In Touch</h2>
+    </div>
+    <div class="contact-container fade-in">
+      <div class="card contact-card">
+        <form id="contactForm" class="contact-form" novalidate>
+          <!-- Honeypot Anti-Bot Field (Hidden from humans) -->
+          <div style="display: none !important; opacity: 0; position: absolute; left: -9999px;">
+            <label for="website_url">Leave this empty</label>
+            <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" class="form-input" placeholder="Your name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <div class="phone-input-group">
+              <select id="countryCode" name="countryCode" class="country-select" aria-label="Country Code">
+                <option value="+91" data-max="10" selected>🇮🇳 +91 (India)</option>
+                <option value="+1" data-max="10">🇺🇸 +1 (US/Canada)</option>
+                <option value="+44" data-max="10">🇬🇧 +44 (UK)</option>
+                <option value="+971" data-max="9">🇦🇪 +971 (UAE)</option>
+                <option value="+966" data-max="9">🇸🇦 +966 (Saudi Arabia)</option>
+                <option value="+65" data-max="8">🇸🇬 +65 (Singapore)</option>
+                <option value="+61" data-max="9">🇦🇺 +61 (Australia)</option>
+                <option value="+49" data-max="11">🇩🇪 +49 (Germany)</option>
+                <option value="+33" data-max="9">🇫🇷 +33 (France)</option>
+                <option value="+81" data-max="10">🇯🇵 +81 (Japan)</option>
+              </select>
+              <input 
+                type="tel" 
+                id="phone" 
+                name="phone" 
+                class="form-input"
+                placeholder="9876543210" 
+                maxlength="10" 
+                inputmode="numeric"
+                required 
+              />
+            </div>
+            <span id="phoneHint" class="input-hint">Enter 10 digits</span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required />
+          </div>
+
+          <button type="submit" id="submitBtn" class="submit-btn">Send Message</button>
+          <div id="formStatus" class="form-status" role="alert"></div>
+        </form>
       </div>
-      <div class="contact-container fade-in">
-        <div class="card contact-card">
-          <form id="contactForm" class="contact-form">
-            <!-- Honeypot Anti-Bot Field (Hidden from humans) -->
-            <div style="display: none !important; opacity: 0; position: absolute; left: -9999px;">
-              <label for="website_url">Leave this empty</label>
-              <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" />
-            </div>
-            <div class="form-group">
-              <label for="name">Full Name</label>
-              <input type="text" id="name" name="name" placeholder="Your name" required />
-            </div>
-
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <div class="phone-input-group">
-                <select id="countryCode" name="countryCode" class="country-select" aria-label="Country Code">
-                  <option value="+91" data-max="10" selected>🇮🇳 +91 (India)</option>
-                  <option value="+1" data-max="10">🇺🇸 +1 (US/Canada)</option>
-                  <option value="+44" data-max="10">🇬🇧 +44 (UK)</option>
-                  <option value="+971" data-max="9">🇦🇪 +971 (UAE)</option>
-                  <option value="+966" data-max="9">🇸🇦 +966 (Saudi Arabia)</option>
-                  <option value="+65" data-max="8">🇸🇬 +65 (Singapore)</option>
-                  <option value="+61" data-max="9">🇦🇺 +61 (Australia)</option>
-                  <option value="+49" data-max="11">🇩🇪 +49 (Germany)</option>
-                  <option value="+33" data-max="9">🇫🇷 +33 (France)</option>
-                  <option value="+81" data-max="10">🇯🇵 +81 (Japan)</option>
-                </select>
-                <input 
-                  type="tel" 
-                  id="phone" 
-                  name="phone" 
-                  placeholder="9876543210" 
-                  maxlength="10" 
-                  inputmode="numeric"
-                  required 
-                />
-              </div>
-              <span id="phoneHint" class="input-hint">Enter 10 digits</span>
-            </div>
-
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" placeholder="you@example.com" required />
-            </div>
-
-            <button type="submit" id="submitBtn" class="submit-btn">Send Message</button>
-            <p id="formStatus" class="form-status"></p>
-          </form>
-        </div>
-      </div>
-    </section>
+    </div>
+  </section>
     <!-- Resume Download Section -->
     <div class="resume-download-wrapper fade-in">
       <a 
@@ -647,7 +650,7 @@
       });
 
       // 5. Cloud Contact Form Handler with Country Code Limiting
-      const contactForm = document.getElementById('contactForm');
+    const contactForm = document.getElementById('contactForm');
       const countryCodeSelect = document.getElementById('countryCode');
       const phoneInput = document.getElementById('phone');
       const phoneHint = document.getElementById('phoneHint');
@@ -656,12 +659,15 @@
 
       // Adjust max length dynamically when country changes
       function updatePhoneConstraint() {
+        if (!countryCodeSelect || !phoneInput) return;
         const selectedOption = countryCodeSelect.options[countryCodeSelect.selectedIndex];
         const maxLen = selectedOption.getAttribute('data-max') || '10';
-        phoneInput.maxLength = maxLen;
-        phoneHint.textContent = `Enter ${maxLen} digits`;
-        if (phoneInput.value.length > parseInt(maxLen)) {
-          phoneInput.value = phoneInput.value.slice(0, parseInt(maxLen));
+        phoneInput.maxLength = parseInt(maxLen, 10);
+        if (phoneHint) {
+          phoneHint.textContent = `Enter ${maxLen} digits`;
+        }
+        if (phoneInput.value.length > parseInt(maxLen, 10)) {
+          phoneInput.value = phoneInput.value.slice(0, parseInt(maxLen, 10));
         }
       }
 
@@ -672,62 +678,84 @@
         phoneInput.addEventListener('input', () => {
           phoneInput.value = phoneInput.value.replace(/\D/g, '');
         });
+
+        // Initialize constraints on load
+        updatePhoneConstraint();
+      }
+
+      function displayStatus(message, isSuccess) {
+        if (!formStatus) return;
+        formStatus.textContent = message;
+        formStatus.className = 'form-status show-status ' + (isSuccess ? 'status-success' : 'status-error');
+      }
+
+      function clearStatus() {
+        if (!formStatus) return;
+        formStatus.className = 'form-status';
+        formStatus.textContent = '';
       }
 
       if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-          const honeypot = document.getElementById('website_url').value;
+          clearStatus();
 
-      // Inside your fetch body:
-      body: JSON.stringify({ 
-        name, 
-        phone: fullPhone, 
-        email,
-        website_url: honeypot 
-      })
-
+          // 1. Gather all values safely
+          const honeypotField = document.getElementById('website_url');
+          const honeypot = honeypotField ? honeypotField.value : '';
           const name = document.getElementById('name').value.trim();
           const rawPhone = phoneInput.value.trim();
           const selectedCode = countryCodeSelect.value;
           const email = document.getElementById('email').value.trim();
-          const requiredLen = parseInt(phoneInput.maxLength);
+          const requiredLen = parseInt(phoneInput.maxLength, 10);
 
-          // Front-end length validation
-          if (rawPhone.length !== requiredLen) {
-            formStatus.style.color = '#e53e3e';
-            formStatus.textContent = `Please enter exactly ${requiredLen} digits for ${selectedCode}.`;
+          // 2. Client-side Validation Checks
+          if (name.length < 2) {
+            displayStatus('Please enter your name (minimum 2 characters).', false);
             return;
           }
 
-          // Combined phone format (e.g. +91 9876543210)
+          if (rawPhone.length !== requiredLen) {
+            displayStatus(`Please enter exactly ${requiredLen} digits for ${selectedCode}.`, false);
+            return;
+          }
+
+          const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+          if (!emailRegex.test(email)) {
+            displayStatus('Please enter a valid email address.', false);
+            return;
+          }
+
+          // Combined phone format (e.g., +91 9876543210)
           const fullPhone = `${selectedCode} ${rawPhone}`;
 
+          // 3. UI Loading Feedback
           submitBtn.disabled = true;
           submitBtn.textContent = 'Sending...';
-          formStatus.textContent = '';
 
           try {
             const response = await fetch('https://portfolio-backend-zuhaib.onrender.com/api/contact', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name, phone: fullPhone, email })
+              body: JSON.stringify({ 
+                name, 
+                phone: fullPhone, 
+                email, 
+                website_url: honeypot 
+              })
             });
 
             const result = await response.json();
 
             if (response.ok) {
-              formStatus.style.color = 'var(--primary)';
-              formStatus.textContent = result.message || 'Thank you! Your message has been sent.';
+              displayStatus(result.message || 'Thank you! Your message has been sent.', true);
               contactForm.reset();
               updatePhoneConstraint();
             } else {
-              formStatus.style.color = '#e53e3e';
-              formStatus.textContent = result.message || 'Error sending message.';
+              displayStatus(result.message || 'Error sending message. Please try again.', false);
             }
           } catch (err) {
-            formStatus.style.color = '#e53e3e';
-            formStatus.textContent = 'Could not connect to the backend server.';
+            displayStatus('Could not connect to the backend server. Please try again in a moment.', false);
           } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Send Message';
